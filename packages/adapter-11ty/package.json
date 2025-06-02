@@ -11,13 +11,17 @@
   "scripts": {
     "build:css": "postcss src/input.css -o dist/styles.css",
     "lint": "eslint src --ext .ts,.js",
-    "build": "tsc -p tsconfig.json",
-    "test": "jest"
+    "build": "tsc -p tsconfig.json && npm run copy:templates",
+    "copy:templates": "copy src\\*.njk dist\\",
+    "test": "jest dist --config=../../jest.config.js"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
     "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.4"
   }
 }

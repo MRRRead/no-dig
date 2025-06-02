@@ -4,6 +4,11 @@
 // 3. Content Transformation Pipeline
 
 // --- Obsidian Markdown Parser ---
+/**
+ * Parses Obsidian-flavored markdown and extracts frontmatter and content.
+ * @param markdown Markdown string
+ * @returns Parsed frontmatter and content
+ */
 export function parseObsidianMarkdown(markdown: string): { frontmatter: Record<string, any>, content: string } {
   const yamlFrontmatterRegex = /^---\n([\s\S]*?)\n---\n?/;
   const match = markdown.match(yamlFrontmatterRegex);
@@ -27,6 +32,11 @@ export function parseObsidianMarkdown(markdown: string): { frontmatter: Record<s
 }
 
 // --- Wikilink and Embedded Content Processor ---
+/**
+ * Processes Obsidian wikilinks and embedded content into HTML.
+ * @param markdown Markdown string
+ * @returns HTML string with links and embeds processed
+ */
 export function processWikilinks(markdown: string): string {
   let html = replaceEmbeddedContent(markdown);
   html = replaceWikilinks(html);
@@ -61,6 +71,11 @@ function removeFileExtension(filename: string): string {
 }
 
 // --- Tag Extraction ---
+/**
+ * Extracts tags from markdown content.
+ * @param markdown Markdown string
+ * @returns Array of tag strings
+ */
 export function extractTags(markdown: string): string[] {
   const tags = [];
   const tagRegex = /(^|\s)#([a-zA-Z0-9-_]+)/g;
@@ -72,6 +87,11 @@ export function extractTags(markdown: string): string[] {
 }
 
 // --- Vault Structure Preservation ---
+/**
+ * Converts a file path to a clean URL.
+ * @param filePath Path to markdown file
+ * @returns Clean URL string
+ */
 export function getUrlFromPath(filePath: string): string {
   return (
     '/' +
@@ -87,17 +107,25 @@ export function getUrlFromPath(filePath: string): string {
 // --- Content Transformation Pipeline ---
 export interface ContentPlugin {
   transformContent?: (content: string, metadata: Record<string, any>) => string;
-  beforeBuild?: (context: any) => void;
-  afterBuild?: (context: any) => void;
+  beforeBuild?: (context: { markdown: string }) => void;
+  afterBuild?: (context: { content: string, metadata: Record<string, any> }) => void;
 }
 
+/**
+ * Main content transformation pipeline. Applies plugins and processes markdown.
+ * @param markdown Markdown string
+ * @param plugins Array of ContentPlugin
+ * @returns Transformed content and frontmatter
+ */
 export function transformContent(markdown: string, plugins: ContentPlugin[] = []): { frontmatter: Record<string, any>, content: string } {
   // Call beforeBuild hooks
   for (const plugin of plugins) {
     if (typeof plugin.beforeBuild === 'function') {
       try {
         plugin.beforeBuild({ markdown });
-      } catch {}
+      } catch (err) {
+        console.error('Plugin beforeBuild error:', err);
+      }
     }
   }
   const parsed = parseObsidianMarkdown(markdown);
@@ -107,7 +135,9 @@ export function transformContent(markdown: string, plugins: ContentPlugin[] = []
     if (typeof plugin.transformContent === 'function') {
       try {
         content = plugin.transformContent(content, metadata);
-      } catch {}
+      } catch (err) {
+        console.error('Plugin transformContent error:', err);
+      }
     }
   }
   // Call afterBuild hooks
@@ -115,8 +145,53 @@ export function transformContent(markdown: string, plugins: ContentPlugin[] = []
     if (typeof plugin.afterBuild === 'function') {
       try {
         plugin.afterBuild({ content, metadata });
-      } catch {}
+      } catch (err) {
+        console.error('Plugin afterBuild error:', err);
+      }
     }
   }
   return { ...parsed, content };
+}
+
+// --- Backlink Extraction ---
+export function extractBacklinks(allFiles: Array<{ path: string; content: string }>): Record<string, string[]> {
+  const backlinks: Record<string, string[]> = {};
+  const wikilinkRegex = /\[\[([^\]|#]+)(?:\|[^\]]+)?\]\]/g;
+  allFiles.forEach(file => {
+    let match;
+    while ((match = wikilinkRegex.exec(file.content))) {
+      const target = match[1].trim();
+      if (!backlinks[target]) backlinks[target] = [];
+      backlinks[target].push(file.path);
+    }
+  });
+  return backlinks;
+}
+
+// --- Navigation Tree Generator ---
+/**
+ * Generates a hierarchical navigation tree from a list of file paths.
+ * @param {string[]} filePaths - List of content file paths (e.g., ['about.md', 'blog/post-1.md'])
+ * @returns {Array<{ name: string, path?: string, children: any[] }>} Navigation tree
+ */
+export function generateNavigationTree(filePaths: string[]): Array<{ name: string, path?: string, children: any[] }> {
+  type NavNode = { name: string; path?: string; children: NavNode[] };
+  function insert(tree: NavNode[], parts: string[], fullPath: string) {
+    if (parts.length === 0) return;
+    const [head, ...rest] = parts;
+    let node = tree.find(n => n.name === head);
+    if (!node) {
+      node = { name: head, path: rest.length === 0 ? fullPath : undefined, children: [] };
+      tree.push(node);
+    }
+    if (rest.length > 0) {
+      insert(node.children, rest, fullPath);
+    }
+  }
+  const tree: NavNode[] = [];
+  filePaths.forEach(fp => {
+    const parts = fp.replace(/\\/g, '/').split('/');
+    insert(tree, parts, fp);
+  });
+  return tree;
 }

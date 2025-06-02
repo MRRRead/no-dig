@@ -1,4 +1,4 @@
-const { parseObsidianMarkdown, processWikilinks, transformContent, getUrlFromPath, extractTags } = require('./index');
+const { parseObsidianMarkdown, processWikilinks, transformContent, getUrlFromPath, extractTags, extractBacklinks, generateNavigationTree } = require('./index');
 
 // Sample markdown constants for reuse
 const SIMPLE_FRONTMATTER = `---\ntitle: Test\n---\n# Heading`;
@@ -84,6 +84,21 @@ describe('Tag Extraction', () => {
   });
 });
 
+describe('Backlink Extraction', () => {
+  it('extracts backlinks from a set of files', () => {
+    const files = [
+      { path: 'A.md', content: 'Link to [[B]] and [[C]]' },
+      { path: 'B.md', content: 'Link to [[C]]' },
+      { path: 'C.md', content: 'No links' }
+    ];
+    const backlinks = extractBacklinks(files);
+    expect(backlinks['B']).toContain('A.md');
+    expect(backlinks['C']).toContain('A.md');
+    expect(backlinks['C']).toContain('B.md');
+    expect(backlinks['A']).toBeUndefined();
+  });
+});
+
 describe('Plugin System', () => {
   beforeEach(() => { pluginMock.called = false; });
   it('calls plugin hooks in the pipeline', () => {
@@ -151,5 +166,31 @@ describe('Edge Cases', () => {
       return { ...parsed, content };
     };
     expect(() => safeTransformContent('Test', [badPlugin])).not.toThrow();
+  });
+});
+
+describe('Navigation Tree Generator', () => {
+  it('generates a hierarchical navigation tree from file paths', () => {
+    const files = [
+      'about.md',
+      'blog/post-1.md',
+      'blog/post-2.md',
+      'contact.md',
+      'services/web.md',
+      'services/seo.md'
+    ];
+    const tree = generateNavigationTree(files);
+    expect(tree).toEqual([
+      { name: 'about.md', path: 'about.md', children: [] },
+      { name: 'blog', children: [
+        { name: 'post-1.md', path: 'blog/post-1.md', children: [] },
+        { name: 'post-2.md', path: 'blog/post-2.md', children: [] }
+      ] },
+      { name: 'contact.md', path: 'contact.md', children: [] },
+      { name: 'services', children: [
+        { name: 'web.md', path: 'services/web.md', children: [] },
+        { name: 'seo.md', path: 'services/seo.md', children: [] }
+      ] }
+    ]);
   });
 });

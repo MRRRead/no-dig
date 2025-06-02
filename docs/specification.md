@@ -230,6 +230,16 @@ See the [[roadmap/development-roadmap]] for a detailed implementation plan.
 
 > **Note:** All development tasks, bugs, and feature requests are tracked in [GitHub Issues](https://github.com/MRRRead/no-dig/issues). For pre-defined issues by phase, see [[roadmap/github-issues]].
 
+## Refactoring and Clean Code Maintenance
+
+NO-DIG follows a strict Clean Code and refactoring discipline:
+
+- All modules are regularly reviewed for SOLID, DRY, and SRP compliance.
+- Plugin interfaces are strictly typed and error handling is robust (errors are logged in all plugin hooks).
+- Adapter functions are fully typed and include JSDoc for maintainability.
+- Negative and snapshot tests are planned for all output-generating modules.
+- This section is updated as part of every major refactor or code review.
+
 ## Conclusion
 
 NO-DIG provides a comprehensive solution for transforming Obsidian vaults into professional, SEO-optimized business websites. With its focus on search engine optimization, performance, and business features, NO-DIG fills a gap in the static site generator ecosystem for business-focused websites that leverage the power of Obsidian for content management.

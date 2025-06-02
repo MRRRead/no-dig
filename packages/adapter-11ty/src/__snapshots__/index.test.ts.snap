@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`11ty Adapter renders expected HTML snapshot 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NO-DIG Site</title>
+</head>
+<body>
+  <nav>
+    <ul>
+      
+        <li>
+          
+            <a href="/about">about</a>
+          
+          
+        </li>
+      
+        <li>
+          
+            blog
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/blog/post-1">post-1</a>
+                </li>
+              
+                <li>
+                  <a href="/blog/post-2">post-2</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+        <li>
+          
+            <a href="/contact">contact</a>
+          
+          
+        </li>
+      
+        <li>
+          
+            services
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/services/web">web</a>
+                </li>
+              
+                <li>
+                  <a href="/services/seo">seo</a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+    </ul>
+  </nav>
+  <main>
+    # Hello <a href="/world">World</a>!
+  </main>
+</body>
+</html>
+"
+`;

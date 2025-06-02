@@ -1,5 +1,6 @@
 ---
 title: Web Services
+tags: [services, web]
 ---
 
 # Web Services
@@ -8,4 +9,4 @@ title: Web Services
 console.log('test');
 ```
 
-[Contact](../About.md)
+[[Contact]]

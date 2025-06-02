@@ -2,7 +2,7 @@
   "name": "@no-dig/adapter-11ty",
   "version": "1.0.0",
   "description": "An adapter for 11ty static site generator.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/no-dig/adapter-11ty.git"
@@ -13,17 +13,21 @@
     "lint": "eslint src --ext .ts,.js",
     "build": "tsc -p tsconfig.json && npm run copy:templates",
     "copy:templates": "copy src\\*.njk dist\\",
-    "test": "jest dist --config=../../jest.config.js",
+    "test": "jest src --config=../../jest.config.js",
     "dev": "npx @11ty/eleventy --serve --config=.eleventy.js",
     "preview": "npm run dev"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",
+    "@types/nunjucks": "^3.2.6",
+    "@types/wait-on": "^5.3.4",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "wait-on": "^8.0.3"
   },
   "dependencies": {
+    "@photogabble/eleventy-plugin-interlinker": "^1.1.0",
     "nunjucks": "^3.2.4"
   }
 }

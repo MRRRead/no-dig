@@ -44,9 +44,7 @@ export function provideContentTo11ty(
   }
 }
 
-// For CommonJS compatibility
-module.exports = {
-  provideContentTo11ty,
-};
+// For CommonJS and ESM compatibility
+export default provideContentTo11ty;
 
 // TODO: Add minimal 11ty template and config if needed

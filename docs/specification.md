@@ -174,32 +174,31 @@ canonical: "https://example.com/products/premium-widget"
 
 ## Plugin System
 
-NO-DIG includes a plugin system for extending functionality:
+NO-DIG includes a plugin system for extending functionality at every stage of the content pipeline and build process. Plugins can implement lifecycle hooks such as:
 
-```javascript
-// Example plugin
-module.exports = function(options) {
-  return {
-    name: 'my-plugin',
-    
-    // Hook into the build process
-    beforeBuild(vault, config) {
-      // Pre-processing logic
-    },
-    
-    // Transform content
-    transformContent(content, metadata) {
-      // Content transformation logic
-      return transformedContent;
-    },
-    
-    // Post-processing
-    afterBuild(output, stats) {
-      // Post-processing logic
-    }
-  };
+- `initialize`
+- `beforeBuild`
+- `beforeContentProcessing` / `afterContentProcessing`
+- `beforeTemplateApplication` / `afterTemplateApplication`
+- `beforeAssetProcessing` / `afterAssetProcessing`
+- `beforeOutput`
+- `afterBuild`
+- `onError`
+
+See [plugin-api.md](plugin-api.md) for the full API, context objects, and best practices.
+
+Example plugin registration in `no-dig.config.js`:
+
+```js
+module.exports = {
+  plugins: [
+    '@no-dig/plugins/seo',
+    ['./my-local-plugin.js', { option: true }]
+  ]
 };
 ```
+
+Plugins can be official (`@no-dig/plugins/*`) or third-party (`no-dig-plugin-*`).
 
 ## Deployment
 
@@ -211,11 +210,25 @@ NO-DIG supports multiple deployment targets through adapters:
 - AWS S3/CloudFront
 - Custom FTP/SFTP
 
+## Project Status
+
+Phase 0 (Project Scaffold & Tooling) is complete as of June 2, 2025.
+
+The repository now includes:
+
+- Monorepo structure with core, cli, and adapter-11ty packages
+- TypeScript, ESLint, Prettier, Jest, and GitHub Actions CI configured
+- 11ty and Tailwind CSS set up in the adapter-11ty package
+- Comprehensive documentation in the docs/ directory
+- All Phase 0 issues closed and tracked via GitHub Issues
+
+The project is now moving to Phase 1: MVP Content Pipeline.
+
 ## Development Roadmap
 
 See the [[roadmap/development-roadmap]] for a detailed implementation plan.
 
-> **Note:** All development tasks, bugs, and feature requests are tracked in [GitHub Issues](https://github.com/your-org/no-dig/issues). For pre-defined issues by phase, see [[roadmap/github-issues]].
+> **Note:** All development tasks, bugs, and feature requests are tracked in [GitHub Issues](https://github.com/MRRRead/no-dig/issues). For pre-defined issues by phase, see [[roadmap/github-issues]].
 
 ## Conclusion
 

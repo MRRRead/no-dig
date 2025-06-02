@@ -46,7 +46,7 @@ Welcome to the NO-DIG documentation. This document serves as the central navigat
 
 - [[roadmap/development-roadmap]] - Comprehensive implementation plan with phases and milestones
 - [[roadmap/github-issues]] - Pre-defined GitHub issues organized by development phase
-- [GitHub Issues](https://github.com/your-org/no-dig/issues) - All tasks, bugs, and feature requests are tracked here.
+- [GitHub Issues](https://github.com/MRRRead/no-dig/issues) - All tasks, bugs, and feature requests are tracked here.
 - [[roadmap/ai-prompting-guide]] - Guidance for using AI tools effectively during development
 - [[roadmap/expert-system-prompt]] - Expert system prompt for AI-assisted development
 
@@ -57,5 +57,9 @@ Welcome to the NO-DIG documentation. This document serves as the central navigat
 ## Obsidian Integration
 
 - [[obsidian-wikilink-guide]] - Guide for implementing and navigating Obsidian wikilinks
+
+## Plugin API
+
+- [[plugin-api]] - Plugin API, lifecycle hooks, and extensibility best practices
 
 This document index will be updated as new documentation is added to the project.

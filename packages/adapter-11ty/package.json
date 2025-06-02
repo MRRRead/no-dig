@@ -1,9 +1,18 @@
 {
   "name": "@no-dig/adapter-11ty",
   "version": "1.0.0",
+  "description": "An adapter for 11ty static site generator.",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/no-dig/adapter-11ty.git"
+  },
+  "license": "MIT",
   "scripts": {
-    "build:css": "postcss src/input.css -o dist/styles.css"
+    "build:css": "postcss src/input.css -o dist/styles.css",
+    "lint": "eslint src --ext .ts,.js",
+    "build": "tsc -p tsconfig.json",
+    "test": "jest"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",

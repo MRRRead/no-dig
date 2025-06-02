@@ -74,6 +74,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Implement wikilink processing
 - Establish basic templating system
 - Create minimal CLI interface
+- Implement plugin system and lifecycle hooks
 
 ### Tasks
 
@@ -83,6 +84,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 4. Implement minimal templating system
 5. Create CLI for basic build commands
 6. Establish content transformation pipeline
+7. Implement plugin system with lifecycle hooks (`beforeBuild`, `transformContent`, `afterBuild`)
 
 ### QA Criteria
 
@@ -90,6 +92,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Wikilinks properly transformed to HTML
 - Basic site generation working
 - CLI successfully building sites
+- Plugin system working with lifecycle hooks
 - Tests covering core functionality
 
 ### 🧠 AI Prompting Guidance
@@ -105,6 +108,7 @@ We're in Phase 1 (MVP Content Pipeline), focusing on:
 - Implementing wikilink processing
 - Establishing basic templating system
 - Creating minimal CLI interface
+- Implementing plugin system and lifecycle hooks
 
 So far, we've completed Phase 0 with the monorepo structure and tooling set up.
 

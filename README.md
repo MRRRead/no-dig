@@ -84,7 +84,7 @@ This project follows an AI-first development approach, with specific guidance fo
 - Monorepo managed with npm workspaces (see `packages/`)
 - Tooling: TypeScript, ESLint, Prettier, Jest, GitHub Actions CI
 - See [docs/document-index.md](docs/document-index.md) for all documentation.
-- **Development tasks and progress are tracked in [GitHub Issues](https://github.com/your-org/no-dig/issues).**
+- **Development tasks and progress are tracked in [GitHub Issues](https://github.com/MRRRead/no-dig/issues).**
 
 ### Local Setup
 
@@ -100,6 +100,27 @@ npm test
 - 11ty is installed and configured in `packages/adapter-11ty`.
 - Tailwind CSS and PostCSS are set up for CSS processing.
 - See `packages/adapter-11ty/.eleventy.js` and `src/input.css` for configuration.
+
+## 🧩 Plugin System & API
+
+NO-DIG features a robust plugin system for extensibility. Plugins can hook into the content pipeline and build process, enabling custom transformations, integrations, and automation.
+
+- See [docs/plugin-api.md](docs/plugin-api.md) for the full Plugin API, lifecycle hooks, and best practices.
+- Plugins can implement lifecycle hooks such as `beforeBuild`, `transformContent`, and `afterBuild`.
+- Example plugin registration:
+
+```js
+// no-dig.config.js
+module.exports = {
+  plugins: [
+    '@no-dig/plugins/seo',
+    ['./my-local-plugin.js', { option: true }]
+  ]
+};
+```
+
+- Plugins can be official (`@no-dig/plugins/*`) or third-party (`no-dig-plugin-*`).
+- See the [Plugin API documentation](docs/plugin-api.md) for hook signatures and usage examples.
 
 ## 📚 Documentation
 

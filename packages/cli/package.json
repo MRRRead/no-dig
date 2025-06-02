@@ -1,0 +1,10 @@
+{
+  "name": "@no-dig/cli",
+  "version": "1.0.0",
+  "bin": {
+    "no-dig": "./bin/no-dig.js"
+  },
+  "dependencies": {
+    "@no-dig/core": "1.0.0"
+  }
+}

@@ -79,6 +79,28 @@ See the [Development Roadmap](docs/roadmap/development-roadmap.md) for detailed 
 
 This project follows an AI-first development approach, with specific guidance for using AI tools effectively throughout the development process. See the [AI Prompting Guide](docs/roadmap/ai-prompting-guide.md) for detailed instructions.
 
+## 🛠️ Development
+
+- Monorepo managed with npm workspaces (see `packages/`)
+- Tooling: TypeScript, ESLint, Prettier, Jest, GitHub Actions CI
+- See [docs/document-index.md](docs/document-index.md) for all documentation.
+- **Development tasks and progress are tracked in [GitHub Issues](https://github.com/your-org/no-dig/issues).**
+
+### Local Setup
+
+```bash
+npm install
+npm run lint
+npm run build
+npm test
+```
+
+## 11ty & Tailwind CSS
+
+- 11ty is installed and configured in `packages/adapter-11ty`.
+- Tailwind CSS and PostCSS are set up for CSS processing.
+- See `packages/adapter-11ty/.eleventy.js` and `src/input.css` for configuration.
+
 ## 📚 Documentation
 
 All project documentation is available in the `docs/` directory. Start with the [Document Index](docs/document-index.md) for a complete overview of all specification documents.

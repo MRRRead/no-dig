@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# Coverage
+coverage/
+
+# Misc
+*.log
+
+# Ignore package-lock in packages (optional, if using workspaces)
+packages/*/package-lock.json

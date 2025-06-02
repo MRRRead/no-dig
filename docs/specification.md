@@ -215,6 +215,8 @@ NO-DIG supports multiple deployment targets through adapters:
 
 See the [[roadmap/development-roadmap]] for a detailed implementation plan.
 
+> **Note:** All development tasks, bugs, and feature requests are tracked in [GitHub Issues](https://github.com/your-org/no-dig/issues). For pre-defined issues by phase, see [[roadmap/github-issues]].
+
 ## Conclusion
 
 NO-DIG provides a comprehensive solution for transforming Obsidian vaults into professional, SEO-optimized business websites. With its focus on search engine optimization, performance, and business features, NO-DIG fills a gap in the static site generator ecosystem for business-focused websites that leverage the power of Obsidian for content management.

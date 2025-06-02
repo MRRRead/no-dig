@@ -46,6 +46,7 @@ Welcome to the NO-DIG documentation. This document serves as the central navigat
 
 - [[roadmap/development-roadmap]] - Comprehensive implementation plan with phases and milestones
 - [[roadmap/github-issues]] - Pre-defined GitHub issues organized by development phase
+- [GitHub Issues](https://github.com/your-org/no-dig/issues) - All tasks, bugs, and feature requests are tracked here.
 - [[roadmap/ai-prompting-guide]] - Guidance for using AI tools effectively during development
 - [[roadmap/expert-system-prompt]] - Expert system prompt for AI-assisted development
 

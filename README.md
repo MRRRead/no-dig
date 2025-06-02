@@ -37,7 +37,19 @@ npm run preview
 
 ## 📋 Project Status
 
-This project is currently in the specification and planning phase. The repository contains comprehensive documentation and development roadmap.
+- **Phase 1 (MVP Content Pipeline) is complete.**
+- **Phase 2.1 (Structured Data & SEO) is in progress.**
+- All core features (content pipeline, parser, wikilinks, embeds, tags, plugin system, CLI, 11ty adapter, layouts, navigation, backlinking) are implemented and tested.
+- Live preview (11ty dev server) is enabled for the adapter-11ty package.
+- See [Development Roadmap](docs/roadmap/development-roadmap.md) for details.
+
+## ❗ Multi-Site Management
+
+NO-DIG currently supports **one site per project directory**. Multi-site management (generating and managing multiple independent sites from a single CLI instance or monorepo) is **not yet implemented or specced**. To manage multiple sites, create a separate project directory for each site (e.g., `no-dig init site-1`, `no-dig init site-2`).
+
+## 🏗️ CLI as the Root Site Generator
+
+The NO-DIG CLI is the primary entry point for generating, managing, and updating sites. The adapter (e.g., adapter-11ty) is responsible for integrating with a specific static site generator (like 11ty) and providing live preview/dev server functionality. All core site management should be performed via the CLI.
 
 ## 📁 Repository Structure
 

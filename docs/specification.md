@@ -224,6 +224,28 @@ The repository now includes:
 
 The project is now moving to Phase 1: MVP Content Pipeline.
 
+## Phase 1: Complete
+
+- All core, CLI, and adapter code refactored for Clean Code (SOLID, DRY, SRP)
+- Comprehensive edge case coverage (wikilinks, embeds, tags, code, backlinks, non-existent pages, empty content)
+- Automated and manual QA checklists complete
+- Live preview enabled via 11ty dev server (`npm run dev` in adapter-11ty)
+
+## Phase 2.1: In Progress
+
+- Work has begun on structured data and SEO features per the updated roadmap.
+- See `roadmap/development-roadmap.md` and `structured-data-strategy.md` for details.
+
+## Live Preview (11ty Dev Server)
+
+You can now use live preview for the 11ty adapter:
+
+```sh
+npm run dev
+```
+
+This launches the 11ty dev server using the sample vault as input, allowing real-time preview of content and templates.
+
 ## Development Roadmap
 
 See the [[roadmap/development-roadmap]] for a detailed implementation plan.

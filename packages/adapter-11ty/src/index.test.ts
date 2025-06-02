@@ -104,3 +104,56 @@ describe('11ty Adapter - sample vault integration', () => {
     });
   });
 });
+
+// 11ty Dev Server (Live Preview)
+// Instead of custom http-server, use 11ty's built-in dev server for live preview integration test
+const { execSync, spawn } = require('child_process');
+const http = require('http');
+// Use existing path/fs imports
+const devServerDir = path.resolve(__dirname, '../_site');
+
+describe('11ty Dev Server (Live Preview)', () => {
+  let serverProcess: ReturnType<typeof spawn> | undefined;
+  const ELEVENTY_PORT = 8080;
+  const ELEVENTY_URL = `http://localhost:${ELEVENTY_PORT}/`;
+
+  beforeAll((done) => {
+    // Start 11ty dev server in background
+    serverProcess = spawn('npx', [
+      '@11ty/eleventy',
+      '--serve',
+      '--input=../test-fixtures/sample-vault',
+      '--output=_site',
+      '--port', ELEVENTY_PORT.toString()
+    ], {
+      cwd: path.resolve(__dirname, '..'),
+      stdio: 'ignore',
+      shell: true,
+      detached: true
+    });
+    // Wait for server to start
+    setTimeout(done, 4000);
+  });
+
+  afterAll(() => {
+    if (serverProcess && serverProcess.pid) {
+      try {
+        process.kill(-serverProcess.pid);
+      } catch (e) {
+        // ignore
+      }
+    }
+  });
+
+  it('serves the generated site at /', (done) => {
+    http.get(ELEVENTY_URL, (res: any) => {
+      let data = '';
+      res.on('data', (chunk: any) => data += chunk);
+      res.on('end', () => {
+        expect(data).toContain('<!DOCTYPE html>');
+        expect(data).toMatch(/Home|About|Blog|Services/);
+        done();
+      });
+    });
+  });
+});

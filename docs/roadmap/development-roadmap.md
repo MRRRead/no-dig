@@ -21,14 +21,14 @@ NO-DIG follows an AI-first development approach, leveraging advanced AI tools to
 
 ## Phase 0: Project Scaffold & Tooling (1-2 weeks)
 
-### Goals
+### Goals (Phase 0)
 
 - Set up the monorepo structure with core packages
 - Configure development environment and tooling
 - Establish CI/CD pipeline
 - Create initial project documentation
 
-### Tasks
+### Tasks (Phase 0)
 
 1. Set up monorepo structure with workspaces
 2. Configure ESLint, Prettier, and TypeScript
@@ -37,14 +37,14 @@ NO-DIG follows an AI-first development approach, leveraging advanced AI tools to
 5. Create initial documentation structure
 6. Set up development environment
 
-### QA Criteria
+### QA Criteria (Phase 0)
 
 - All linting and formatting tools working correctly
 - CI/CD pipeline successfully running tests
 - Documentation structure established
 - Development environment fully functional
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 0)
 
 When working with AI tools during Phase 0, use this system prompt template:
 
@@ -67,7 +67,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 
 ## Phase 1: MVP Content Pipeline (2-3 weeks)
 
-### Goals
+### Goals (Phase 1)
 
 - Implement core Obsidian parsing functionality
 - Create basic 11ty adapter
@@ -75,7 +75,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Establish basic templating system
 - Create minimal CLI interface
 
-### Tasks
+### Tasks (Phase 1)
 
 1. Implement Obsidian markdown parser
 2. Create wikilink processor
@@ -84,7 +84,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 5. Create CLI for basic build commands
 6. Establish content transformation pipeline
 
-### QA Criteria
+### QA Criteria (Phase 1)
 
 - Obsidian markdown correctly parsed
 - Wikilinks properly transformed to HTML
@@ -92,7 +92,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - CLI successfully building sites
 - Tests covering core functionality
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 1)
 
 When working with AI tools during Phase 1, use this system prompt template:
 
@@ -111,9 +111,19 @@ So far, we've completed Phase 0 with the monorepo structure and tooling set up.
 I need your help with [specific task]. Please provide detailed implementation guidance following clean code principles (SOLID, DRY) and ensuring optimal performance.
 ```
 
+## Phase 1: Complete
+
+- All core features implemented, tested, and documented.
+- Live preview (11ty dev server) enabled for adapter-11ty.
+
+## Phase 2.1: Structured Data & SEO (In Progress)
+
+- Begin implementation of structured data (JSON-LD, microdata) and SEO enhancements.
+- See `docs/structured-data-strategy.md` and `docs/seo-implementation-roadmap.md` for technical details.
+
 ## Phase 2: SEO & Performance Hardening (2-3 weeks)
 
-### Goals
+### Goals (Phase 2)
 
 - Implement structured data generation
 - Create SEO metadata management
@@ -121,7 +131,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Implement image optimization pipeline
 - Create sitemap generation
 
-### Tasks
+### Tasks (Phase 2)
 
 1. Implement structured data generation from content
 2. Create SEO metadata extraction and management
@@ -131,7 +141,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 6. Implement canonical URL management
 7. Add robots.txt generation
 
-### QA Criteria
+### QA Criteria (Phase 2)
 
 - Perfect Lighthouse scores for SEO
 - Structured data validating correctly
@@ -139,7 +149,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Sitemaps generating correctly
 - Core Web Vitals metrics meeting targets
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 2)
 
 When working with AI tools during Phase 2, use this system prompt template:
 
@@ -162,7 +172,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 
 ## Phase 3: Feature Completeness (2-3 weeks)
 
-### Goals
+### Goals (Phase 3)
 
 - Implement contact form system
 - Create component/shortcode system
@@ -170,7 +180,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Implement breadcrumbs
 - Create navigation management
 
-### Tasks
+### Tasks (Phase 3)
 
 1. Implement contact form system with multiple provider support
 2. Create component/shortcode system for reusable elements
@@ -180,7 +190,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 6. Implement cookie consent mechanism
 7. Ensure GDPR/CCPA compliance
 
-### QA Criteria
+### QA Criteria (Phase 3)
 
 - Contact forms working with all supported providers
 - Components rendering correctly
@@ -189,7 +199,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Navigation system fully functional
 - Privacy compliance verified
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 3)
 
 When working with AI tools during Phase 3, use this system prompt template:
 
@@ -213,7 +223,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 
 ## Phase 4: Scalability & UX Enhancements (3-4 weeks)
 
-### Goals
+### Goals (Phase 4)
 
 - Implement pagination for large content collections
 - Add tag and category pages
@@ -221,7 +231,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Add internationalization support
 - Enhance user experience
 
-### Tasks
+### Tasks (Phase 4)
 
 1. Implement pagination system for large content collections
 2. Create tag and category page generation
@@ -229,7 +239,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 4. Add internationalization support
 5. Enhance user experience with dark mode, print styles, etc.
 
-### QA Criteria
+### QA Criteria (Phase 4)
 
 - Pagination working correctly
 - Tag and category pages generating properly
@@ -237,7 +247,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Internationalization support functioning correctly
 - UX enhancements properly implemented
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 4)
 
 When working with AI tools during Phase 4, use this system prompt template:
 
@@ -262,7 +272,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 
 ## Phase 5: Pre-Release Polishing & Observability (2-3 weeks)
 
-### Goals
+### Goals (Phase 5)
 
 - Implement observability features
 - Conduct final accessibility audit
@@ -270,7 +280,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Fine-tune performance
 - Prepare for release
 
-### Tasks
+### Tasks (Phase 5)
 
 1. Implement observability features (error tracking, performance monitoring)
 2. Conduct comprehensive accessibility audit
@@ -278,7 +288,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 4. Fine-tune performance
 5. Prepare release documentation
 
-### QA Criteria
+### QA Criteria (Phase 5)
 
 - Observability features functioning correctly
 - WCAG 2.1 AA compliance verified
@@ -286,7 +296,7 @@ I need your help with [specific task]. Please provide detailed implementation gu
 - Performance metrics meeting targets
 - Documentation complete and accurate
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 5)
 
 When working with AI tools during Phase 5, use this system prompt template:
 
@@ -312,28 +322,28 @@ I need your help with [specific task]. Please provide detailed implementation gu
 
 ## Phase 6: Maintenance & Iteration (Continuous)
 
-### Goals
+### Goals (Phase 6)
 
 - Provide ongoing maintenance
 - Address user feedback
 - Implement minor enhancements
 - Plan for future major versions
 
-### Tasks
+### Tasks (Phase 6)
 
 1. Address bugs and issues
 2. Collect and analyze user feedback
 3. Implement minor enhancements
 4. Plan for future major versions
 
-### QA Criteria
+### QA Criteria (Phase 6)
 
 - Issues addressed promptly
 - User feedback incorporated
 - Enhancements properly implemented
 - Future planning documented
 
-### 🧠 AI Prompting Guidance
+### 🧠 AI Prompting Guidance (Phase 6)
 
 When working with AI tools during Phase 6, use this system prompt template:
 

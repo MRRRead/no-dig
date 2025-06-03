@@ -14,12 +14,19 @@ try {
   plugins = [];
 }
 
-// Import the NO-DIG plugin registration utility
-import { registerNoDigPluginsWithEleventy } from './src/index.js';
+// We don't need to import directly from the adapter since we're in our own config
+// The adapter functionality is used by the NO-DIG CLI when running builds
 
 export default async function(eleventyConfig) {
   if (plugins.length > 0) {
-    registerNoDigPluginsWithEleventy(eleventyConfig, plugins);
+    // Register plugins from the plugins.js file
+    plugins.forEach((plugin) => {
+      if (typeof plugin === 'object' && plugin.plugin && plugin.options) {
+        eleventyConfig.addPlugin(plugin.plugin, plugin.options);
+      } else {
+        eleventyConfig.addPlugin(plugin);
+      }
+    });
   } else {
     // Fallback: add interlinker directly for legacy/test/dev
     const __dirname = path.dirname(fileURLToPath(import.meta.url));

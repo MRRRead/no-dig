@@ -2,6 +2,12 @@
 
 This document outlines the Plugin API for NO-DIG, providing developers with the information needed to create custom plugins that extend the functionality of the static site generator.
 
+## ⚠️ Current Limitations / Known Issues (June 2025)
+
+- The plugin wrapper system is implemented and works for core and CLI, but **integration with 11ty for Obsidian-style wikilinks is not yet fully functional**. The 11ty build output does not render wikilinks as HTML links due to unresolved plugin resolution issues with @photogabble/eleventy-plugin-interlinker in a monorepo/Windows environment.
+- Plugin wrappers for other 11ty plugins (SEO, images, etc.) are planned for Phase 2.
+- See the [Development Roadmap](./roadmap/development-roadmap.md) and [README](../README.md) for status and next steps.
+
 ## Plugin Architecture
 
 NO-DIG's plugin system is designed to be flexible, powerful, and easy to use. Plugins can hook into various stages of the build process, modify content, add new features, and integrate with external services.
@@ -42,6 +48,16 @@ Plugins can be specified as:
 - Package name strings (for npm packages)
 - Arrays with configuration options `[pluginName, options]`
 - Relative paths to local plugin files
+
+## 11ty Plugin Registration Flow
+
+NO-DIG adapters (such as @no-dig/adapter-11ty) support dynamic plugin registration via the plugin host. The `.eleventy.js` config attempts to load plugins from a generated `plugins.js` file (created by the CLI or build process), and registers them using the `registerNoDigPluginsWithEleventy` utility. This ensures all plugins are initialized and configured according to the NO-DIG plugin API, and allows for robust, cross-environment plugin integration.
+
+If no plugins are found, the adapter falls back to registering the core wikilinks/interlinker plugin for compatibility.
+
+### Wikilink URL Slugification
+
+The wikilinks plugin ensures all generated URLs are slugified according to the NO-DIG spec: lowercase, spaces to dashes, special characters removed (except dashes/underscores), and no double or trailing slashes. This guarantees consistent, SEO-friendly URLs across all output and live preview environments.
 
 ## Plugin Lifecycle Hooks
 

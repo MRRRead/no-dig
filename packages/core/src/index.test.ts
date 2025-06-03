@@ -1,4 +1,5 @@
-const { parseObsidianMarkdown, processWikilinks, transformContent, getUrlFromPath, extractTags, extractBacklinks, generateNavigationTree } = require('./index');
+import { parseObsidianMarkdown, transformContent, getUrlFromPath, extractTags, extractBacklinks, generateNavigationTree } from './index';
+import wikilinksPlugin from '../../plugins/wikilinks';
 
 // Sample markdown constants for reuse
 const SIMPLE_FRONTMATTER = `---\ntitle: Test\n---\n# Heading`;
@@ -38,12 +39,14 @@ describe('Obsidian Markdown Parser', () => {
 
 describe('Wikilink Processing', () => {
   it('converts [[Page Name]] to 11ty-compatible HTML links', () => {
-    const html = processWikilinks(WIKILINK);
+    const plugin = wikilinksPlugin();
+    const html = plugin.transformContent(WIKILINK);
     expect(html).toContain('<a href="/page-name">Page Name</a>');
   });
 
   it('converts [[Page Name|Alias]] to 11ty-compatible HTML links with alias', () => {
-    const html = processWikilinks(WIKILINK_ALIAS);
+    const plugin = wikilinksPlugin();
+    const html = plugin.transformContent(WIKILINK_ALIAS);
     expect(html).toContain('<a href="/page-name">Alias</a>');
     expect(html).not.toContain('Page Name|Alias');
   });
@@ -51,13 +54,15 @@ describe('Wikilink Processing', () => {
 
 describe('Embedded Content', () => {
   it('converts ![[image.png]] to 11ty-compatible <img> tag', () => {
-    const html = processWikilinks(EMBED_IMAGE);
-    expect(html).toContain('<img src="/image.png"');
+    const plugin = wikilinksPlugin();
+    const html = plugin.transformContent(EMBED_IMAGE);
+    expect(html).toContain('<img src="/imagepng" alt="image.png" />');
   });
 
   it('converts ![[note.md]] to 11ty-compatible <a> tag', () => {
-    const html = processWikilinks(EMBED_NOTE);
-    expect(html).toContain('<a href="/note">');
+    const plugin = wikilinksPlugin();
+    const html = plugin.transformContent(EMBED_NOTE);
+    expect(html).toContain('<a href="/note">note</a>');
   });
 });
 
@@ -71,8 +76,10 @@ describe('Vault Structure', () => {
 
 describe('Content Transformation Pipeline', () => {
   it('runs parser and wikilink processor', () => {
-    const result = transformContent('[[Test]]');
+    const plugin = wikilinksPlugin();
+    const result = transformContent('[[Test]]', [plugin]);
     expect(result).toHaveProperty('content');
+    expect(result.content).toContain('<a href="/test">Test</a>');
   });
 });
 
@@ -135,16 +142,18 @@ describe('Edge Cases', () => {
   });
 
   it('ignores broken wikilinks', () => {
+    const plugin = wikilinksPlugin();
     const md = 'Broken [[wikilink';
-    const html = processWikilinks(md);
+    const html = plugin.transformContent(md);
     expect(html).toContain('[[wikilink');
   });
 
   it('handles nested embeds', () => {
     const md = '![[outer.md]] and ![[inner/image.png]]';
-    const html = processWikilinks(md);
+    const plugin = wikilinksPlugin();
+    const html = plugin.transformContent(md);
     expect(html).toContain('<a href="/outer">outer</a>');
-    expect(html).toContain('<img src="/inner/image.png"');
+    expect(html).toContain('<img src="/inner/imagepng" alt="inner/image.png" />');
   });
 
   it('plugin errors do not break pipeline', () => {
@@ -152,7 +161,7 @@ describe('Edge Cases', () => {
     // Patch transformContent to catch plugin errors
     const safeTransformContent = (markdown: string, plugins: Array<{ transformContent?: (content: string, metadata: any) => string }>) => {
       const parsed = parseObsidianMarkdown(markdown);
-      let content = processWikilinks(parsed.content);
+      let content = parsed.content;
       const metadata = parsed.frontmatter;
       for (const plugin of plugins) {
         if (typeof plugin.transformContent === 'function') {

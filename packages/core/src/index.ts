@@ -31,45 +31,6 @@ export function parseObsidianMarkdown(markdown: string): { frontmatter: Record<s
   return { frontmatter, content: content.trim() };
 }
 
-// --- Wikilink and Embedded Content Processor ---
-/**
- * Processes Obsidian wikilinks and embedded content into HTML.
- * @param markdown Markdown string
- * @returns HTML string with links and embeds processed
- */
-export function processWikilinks(markdown: string): string {
-  let html = replaceEmbeddedContent(markdown);
-  html = replaceWikilinks(html);
-  return html;
-}
-
-function replaceEmbeddedContent(markdown: string): string {
-  return markdown.replace(/!\[\[([^\]]+)\]\]/g, (match, file) => {
-    if (isImage(file)) {
-      return `<img src="/${file}" alt="${file}" />`;
-    } else {
-      const name = removeFileExtension(file);
-      return `<a href="/${name.toLowerCase()}">${name}</a>`;
-    }
-  });
-}
-
-function replaceWikilinks(markdown: string): string {
-  return markdown.replace(/\[\[([^\]|]+)(\|([^\]]+))?\]\]/g, (match, page, _alias, alias) => {
-    const text = alias || page;
-    const href = page.trim().replace(/\s+/g, '-').toLowerCase();
-    return `<a href="/${href}">${text.trim()}</a>`;
-  });
-}
-
-function isImage(filename: string): boolean {
-  return /\.(png|jpg|jpeg|gif|svg|webp|avif)$/i.test(filename);
-}
-
-function removeFileExtension(filename: string): string {
-  return filename.replace(/\.[^/.]+$/, '');
-}
-
 // --- Tag Extraction ---
 /**
  * Extracts tags from markdown content.
@@ -129,12 +90,12 @@ export function transformContent(markdown: string, plugins: ContentPlugin[] = []
     }
   }
   const parsed = parseObsidianMarkdown(markdown);
-  let content = processWikilinks(parsed.content);
+  let html = parsed.content;
   const metadata = parsed.frontmatter;
   for (const plugin of plugins) {
     if (typeof plugin.transformContent === 'function') {
       try {
-        content = plugin.transformContent(content, metadata);
+        html = plugin.transformContent(html, metadata);
       } catch (err) {
         console.error('Plugin transformContent error:', err);
       }
@@ -144,13 +105,13 @@ export function transformContent(markdown: string, plugins: ContentPlugin[] = []
   for (const plugin of plugins) {
     if (typeof plugin.afterBuild === 'function') {
       try {
-        plugin.afterBuild({ content, metadata });
+        plugin.afterBuild({ content: html, metadata });
       } catch (err) {
         console.error('Plugin afterBuild error:', err);
       }
     }
   }
-  return { ...parsed, content };
+  return { frontmatter: metadata, content: html };
 }
 
 // --- Backlink Extraction ---
@@ -194,4 +155,29 @@ export function generateNavigationTree(filePaths: string[]): Array<{ name: strin
     insert(tree, parts, fp);
   });
   return tree;
+}
+
+import { PluginHost } from './PluginHost';
+import { parseVault } from './parseVault';
+
+/**
+ * buildSite({ plugins, vaultPath, adapter })
+ * Orchestrates the build pipeline per spec.
+ */
+/**
+ * @param {Object} opts
+ * @param {Array} opts.plugins
+ * @param {string} opts.vaultPath
+ * @param {Object} opts.adapter
+ */
+export async function buildSite({ plugins = [], vaultPath, adapter }: { plugins?: any[]; vaultPath: string; adapter: any }) {
+  const host = new PluginHost(plugins);
+  await host.runHook('onBuildStart', {});
+  const pages = await parseVault(vaultPath);
+  await host.runHook('onVaultParsed', { pages });
+  for (const page of pages) {
+    await host.runHook('onPageGenerated', { page });
+  }
+  await adapter.generateSite(pages, 'dist');
+  await host.runHook('onBuildEnd', {});
 }

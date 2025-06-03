@@ -8,6 +8,7 @@
     "url": "https://github.com/no-dig/adapter-11ty.git"
   },
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build:css": "postcss src/input.css -o dist/styles.css",
     "lint": "eslint src --ext .ts,.js",

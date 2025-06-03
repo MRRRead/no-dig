@@ -44,7 +44,29 @@ export function provideContentTo11ty(
   }
 }
 
+/**
+ * Registers NO-DIG plugins with an Eleventy config object.
+ * This allows .eleventy.js to register all plugins from the plugin host.
+ * @param eleventyConfig The Eleventy config object
+ * @param plugins Array of NO-DIG plugins (from PluginHost or config)
+ */
+export function registerNoDigPluginsWithEleventy(eleventyConfig: any, plugins: any[]) {
+  for (const plugin of plugins) {
+    if (typeof plugin.initialize === 'function') {
+      // Simulate NO-DIG plugin API: pass Eleventy config as context
+      plugin.initialize({ config: eleventyConfig });
+    }
+  }
+}
+
 // For CommonJS and ESM compatibility
+// Attach to exports if available (for Jest/Node interop)
+try {
+  // @ts-ignore
+  exports.provideContentTo11ty = provideContentTo11ty;
+} catch {}
+(provideContentTo11ty as unknown as { default: typeof provideContentTo11ty }).default =
+  provideContentTo11ty;
 export default provideContentTo11ty;
 
 // TODO: Add minimal 11ty template and config if needed

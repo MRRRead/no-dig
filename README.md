@@ -37,11 +37,15 @@ npm run preview
 
 ## 📋 Project Status
 
-- **Phase 1 (MVP Content Pipeline) is complete.**
+- **Phase 1 (MVP Content Pipeline) is ~90% complete.**
 - **Phase 2.1 (Structured Data & SEO) is in progress.**
 - All core features (content pipeline, parser, wikilinks, embeds, tags, plugin system, CLI, 11ty adapter, layouts, navigation, backlinking) are implemented and tested.
+- **Known Issue:** The 11ty build output does not yet render Obsidian-style wikilinks as HTML links due to a plugin resolution issue with @photogabble/eleventy-plugin-interlinker in the monorepo/Windows environment. This is the last blocker for full Phase 1 completion. See [Development Roadmap](docs/roadmap/development-roadmap.md) for details and next steps.
 - Live preview (11ty dev server) is enabled for the adapter-11ty package.
-- See [Development Roadmap](docs/roadmap/development-roadmap.md) for details.
+
+## ❗ Known Issues / Blockers
+
+- **Wikilink HTML output in 11ty:** Wikilinks are correctly processed in the core pipeline and plugin tests, but the actual 11ty build output does not render them as HTML links. This is due to unresolved plugin resolution issues with @photogabble/eleventy-plugin-interlinker in a monorepo/Windows context. See roadmap for workaround attempts and next steps.
 
 ## ❗ Multi-Site Management
 
@@ -133,6 +137,18 @@ module.exports = {
 
 - Plugins can be official (`@no-dig/plugins/*`) or third-party (`no-dig-plugin-*`).
 - See the [Plugin API documentation](docs/plugin-api.md) for hook signatures and usage examples.
+
+## Plugin Ecosystem
+
+NO-DIG leverages the best existing 11ty plugins while providing a consistent, business-focused API. The plugin system wraps high-quality community plugins with sensible defaults for business websites.
+
+Key integrations include:
+- Wikilinks and backlinking (via eleventy-plugin-interlinker)
+- Structured data (via eleventy-plugin-schema)
+- Image optimization (via @11ty/eleventy-img)
+- And more...
+
+See the [Plugin API documentation](docs/plugin-api.md) for details.
 
 ## 📚 Documentation
 

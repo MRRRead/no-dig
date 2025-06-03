@@ -4,7 +4,8 @@
     "module": "commonjs",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "allowJs": true
+    "allowJs": true,
+    "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/utils/*.ts"]
 }

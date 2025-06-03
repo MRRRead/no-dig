@@ -100,6 +100,10 @@ The adapter testing focuses on:
 - **Template Rendering**: Verifying template application
 - **Data Cascade**: Testing data flow through the adapter
 - **Output Generation**: Validating generated HTML and assets
+- **End-to-End Output Validation**: Ensuring that the actual HTML output from 11ty matches the contract (e.g., wikilinks are rendered as HTML links in the built site, not just in the core/plugin transform)
+
+**Current Limitation:**
+- As of June 2025, the 11ty build output does not render Obsidian-style wikilinks as HTML links due to a plugin resolution issue. Tests should be updated to check the final HTML output once this is resolved.
 
 **Implementation:**
 ```javascript
@@ -471,117 +475,18 @@ test('builds a site with proper navigation and links', async ({ page }) => {
 });
 ```
 
-## Specialized Testing
+## Testing Tools and Frameworks
 
-### Accessibility Testing
+NO-DIG utilizes a variety of tools and frameworks for testing:
 
-Ensuring WCAG compliance and accessibility for all users.
-
-#### Implementation:
-- **Automated**: axe-core integration with Playwright
-- **Manual**: Screen reader testing and keyboard navigation
-- **Standards**: WCAG 2.1 AA compliance
-- **Running**: Automated on pull requests, manual before releases
-
-#### Example Accessibility Test:
-
-```javascript
-// Testing accessibility compliance
-test('pages meet accessibility standards', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  
-  // Run axe accessibility tests
-  const violations = await runAxe(page);
-  
-  // Should have no accessibility violations
-  expect(violations.length).toBe(0);
-});
-```
-
-### Performance Testing
-
-Verifying the system meets performance targets.
-
-#### Implementation:
-- **Tools**: Lighthouse CI, WebPageTest API
-- **Metrics**: Core Web Vitals, PageSpeed score
-- **Thresholds**: 90+ on all Lighthouse categories
-- **Running**: Automated on release branches
-
-#### Example Performance Test:
-
-```javascript
-// Testing performance metrics
-test('meets performance targets', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  
-  // Run Lighthouse performance audit
-  const metrics = await runLighthouse(page);
-  
-  // Check Core Web Vitals
-  expect(metrics.LCP).toBeLessThan(2500); // Largest Contentful Paint
-  expect(metrics.FID).toBeLessThan(100);  // First Input Delay
-  expect(metrics.CLS).toBeLessThan(0.1);  // Cumulative Layout Shift
-  
-  // Check overall score
-  expect(metrics.performance).toBeGreaterThan(90);
-});
-```
-
-### SEO Testing
-
-Verifying SEO features and compliance.
-
-#### Implementation:
-- **Tools**: Custom SEO validator, structured data testing
-- **Checks**: Meta tags, structured data, sitemaps
-- **Standards**: Schema.org validation
-- **Running**: Automated on release branches
-
-#### Example SEO Test:
-
-```javascript
-// Testing SEO features
-test('implements proper SEO features', async ({ page }) => {
-  await page.goto('http://localhost:3000/product-page');
-  
-  // Check meta tags
-  await expect(page.locator('meta[name="description"]')).toBeVisible();
-  
-  // Check structured data
-  const structuredData = await page.evaluate(() => {
-    return JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);
-  });
-  
-  expect(structuredData['@type']).toBe('Product');
-  expect(structuredData.name).toBeDefined();
-  expect(structuredData.price).toBeDefined();
-});
-```
-
-### Visual Regression Testing
-
-Ensuring UI consistency across changes.
-
-#### Implementation:
-- **Tools**: Playwright with visual comparisons
-- **Coverage**: Key pages and components
-- **Thresholds**: Pixel difference tolerance of 0.5%
-- **Running**: Automated on pull requests
-
-#### Example Visual Regression Test:
-
-```javascript
-// Testing visual consistency
-test('maintains visual consistency', async ({ page }) => {
-  await page.goto('http://localhost:3000');
-  
-  // Take a screenshot and compare to baseline
-  await expect(page).toHaveScreenshot('homepage.png', {
-    maxDiffPixelRatio: 0.005
-  });
-});
-```
+- **Jest**: JavaScript testing framework for unit and integration tests
+- **Playwright**: Browser automation library for end-to-end testing
+- **axe-core**: Accessibility testing engine
+- **Lighthouse CI**: Performance and SEO auditing tool
+- **ESLint**: Static code analysis tool for identifying problematic patterns in JavaScript code
+- **Prettier**: Code formatter that enforces a consistent style
+- **TypeScript**: Superset of JavaScript that compiles to plain JavaScript, adding static type definitions
+- **SonarQube**: Continuous inspection tool that provides code quality and security analysis
 
 ## Continuous Integration
 

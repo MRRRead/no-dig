@@ -252,6 +252,46 @@ NO-DIG implements a comprehensive testing strategy across all packages:
 
 For the complete testing strategy, see [[testing-and-automation-strategy]].
 
+## 11. Lessons Learned: Test Configuration, Duplication, and Plugin Strategy (2025-06-03)
+
+### 11.1 Robust Test Configuration
+
+- **Jest Test Scope**: Ensure Jest is configured to only run tests from `src/` directories, not from compiled `dist/` output. This avoids duplicate/conflicting test runs and ensures only source-of-truth tests are executed.
+- **testMatch Example**:
+  ```js
+  // jest.config.js
+  module.exports = {
+    testMatch: ['**/src/**/*.test.ts'],
+    // ...other config
+  };
+  ```
+- **Per-Package Jest Config**: Each package can have its own Jest config, but the root config should not include both `src/` and `dist/` patterns.
+- **TypeScript Interop**: When mixing ESM and CommonJS, prefer using `require('./index').default || require('./index').provideContentTo11ty` in tests to ensure compatibility with both module systems.
+
+### 11.2 Avoiding Duplication of Responsibilities
+
+- **Leverage Existing 11ty Plugins**: Before implementing custom logic (e.g., for wikilinks, SEO, images), check for mature 11ty plugins or npm packages. Integrate them via the plugin system rather than duplicating their functionality.
+- **Plugin Boundaries**: Core should only provide plugin hooks and orchestration. All content transformation (wikilinks, embeds, SEO, etc.) should be implemented as plugins, not in the core or adapter.
+- **Adapter Role**: The 11ty adapter should focus on template integration, data cascade, and build optimization. Avoid embedding business logic that belongs in plugins.
+- **CLI Role**: The CLI should only orchestrate workflows and not duplicate logic from core, adapter, or plugins.
+
+### 11.3 Test Failures and Debugging
+
+- **Current Known Issue**: The 11ty adapter test suite has a persistent interop issue (`provideContentTo11ty is not a function`). This is due to TypeScript/ESM/CommonJS export differences. The recommended workaround is to use the robust require pattern above.
+- **Test Cleanup**: Always clean up temporary files and directories in tests to avoid race conditions and file lock issues, especially on Windows.
+- **Debug Output**: Use debug printouts in tests and implementation to confirm directory state and output paths during test runs.
+
+### 11.4 General Code Review Against Spec & Roadmap
+
+- **Responsibility Separation**: Review all packages to ensure they do not duplicate logic available in 11ty plugins or npm. For example, use `eleventy-plugin-interlinker` for wikilinks, and established SEO/image plugins where possible.
+- **Plugin-First Approach**: All content and output transformations should be implemented as plugins, not hardcoded in core or adapters.
+- **Test-Driven Development**: Tests should define the contract. Do not "hack" tests to pass; implementation must satisfy the test contract as written.
+- **Documentation**: Document all configuration, plugin usage, and test setup in the main docs for future maintainers.
+
+For more details, see the updated [[testing-and-automation-strategy]] and [[plugin-api]].
+
+---
+
 ## 6. Deployment and Release Strategy
 
 ### 6.1 Package Release Workflow

@@ -4,9 +4,7 @@ import * as nunjucks from 'nunjucks';
 import waitOn from 'wait-on';
 import wikilinksPlugin from '../../plugins/wikilinks';
 const { transformContent, generateNavigationTree } = require('@no-dig/core');
-// Robust interop: support function, .default, or .provideContentTo11ty
-const mod = require('./index');
-const provideContentTo11ty = mod.provideContentTo11ty || mod.default || mod;
+import provideContentTo11ty from './index';
 
 // --- 11ty Adapter: Wikilink Plugin Integration Tests ---
 describe('11ty Adapter', () => {

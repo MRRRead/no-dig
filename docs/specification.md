@@ -85,6 +85,14 @@ This architecture allows for:
 7. **Asset Optimization**: Process and optimize images, CSS, and JavaScript
 8. **Output Generation**: Generate final HTML, CSS, JavaScript, and assets
 
+**Current Status (June 2025):**
+- Steps 1-7 are implemented and tested in the core pipeline and plugin system.
+- **Step 3 (Wikilink Processing) is only partially complete:** Wikilinks are correctly processed in the core/plugin pipeline, but the final 11ty build output does not render them as HTML links due to a plugin resolution issue. This is the last blocker for full Phase 1 completion.
+
+### Next Steps
+- Resolve 11ty plugin resolution so that wikilinks are rendered as HTML links in the built site.
+- Update integration tests to check the actual HTML output from 11ty, not just the core/plugin transform.
+
 ### CLI Workflow
 
 ```bash
@@ -174,31 +182,32 @@ canonical: "https://example.com/products/premium-widget"
 
 ## Plugin System
 
-NO-DIG includes a plugin system for extending functionality at every stage of the content pipeline and build process. Plugins can implement lifecycle hooks such as:
+NO-DIG includes a plugin system for extending functionality:
 
-- `initialize`
-- `beforeBuild`
-- `beforeContentProcessing` / `afterContentProcessing`
-- `beforeTemplateApplication` / `afterTemplateApplication`
-- `beforeAssetProcessing` / `afterAssetProcessing`
-- `beforeOutput`
-- `afterBuild`
-- `onError`
-
-See [plugin-api.md](plugin-api.md) for the full API, context objects, and best practices.
-
-Example plugin registration in `no-dig.config.js`:
-
-```js
-module.exports = {
-  plugins: [
-    '@no-dig/plugins/seo',
-    ['./my-local-plugin.js', { option: true }]
-  ]
+```javascript
+// Example plugin
+module.exports = function(options) {
+  return {
+    name: 'my-plugin',
+    
+    // Hook into the build process
+    beforeBuild(vault, config) {
+      // Pre-processing logic
+    },
+    
+    // Transform content
+    transformContent(content, metadata) {
+      // Content transformation logic
+      return transformedContent;
+    },
+    
+    // Post-processing
+    afterBuild(output, stats) {
+      // Post-processing logic
+    }
+  };
 };
 ```
-
-Plugins can be official (`@no-dig/plugins/*`) or third-party (`no-dig-plugin-*`).
 
 ## Deployment
 
@@ -210,57 +219,9 @@ NO-DIG supports multiple deployment targets through adapters:
 - AWS S3/CloudFront
 - Custom FTP/SFTP
 
-## Project Status
-
-Phase 0 (Project Scaffold & Tooling) is complete as of June 2, 2025.
-
-The repository now includes:
-
-- Monorepo structure with core, cli, and adapter-11ty packages
-- TypeScript, ESLint, Prettier, Jest, and GitHub Actions CI configured
-- 11ty and Tailwind CSS set up in the adapter-11ty package
-- Comprehensive documentation in the docs/ directory
-- All Phase 0 issues closed and tracked via GitHub Issues
-
-The project is now moving to Phase 1: MVP Content Pipeline.
-
-## Phase 1: Complete
-
-- All core, CLI, and adapter code refactored for Clean Code (SOLID, DRY, SRP)
-- Comprehensive edge case coverage (wikilinks, embeds, tags, code, backlinks, non-existent pages, empty content)
-- Automated and manual QA checklists complete
-- Live preview enabled via 11ty dev server (`npm run dev` in adapter-11ty)
-
-## Phase 2.1: In Progress
-
-- Work has begun on structured data and SEO features per the updated roadmap.
-- See `roadmap/development-roadmap.md` and `structured-data-strategy.md` for details.
-
-## Live Preview (11ty Dev Server)
-
-You can now use live preview for the 11ty adapter:
-
-```sh
-npm run dev
-```
-
-This launches the 11ty dev server using the sample vault as input, allowing real-time preview of content and templates.
-
 ## Development Roadmap
 
 See the [[roadmap/development-roadmap]] for a detailed implementation plan.
-
-> **Note:** All development tasks, bugs, and feature requests are tracked in [GitHub Issues](https://github.com/MRRRead/no-dig/issues). For pre-defined issues by phase, see [[roadmap/github-issues]].
-
-## Refactoring and Clean Code Maintenance
-
-NO-DIG follows a strict Clean Code and refactoring discipline:
-
-- All modules are regularly reviewed for SOLID, DRY, and SRP compliance.
-- Plugin interfaces are strictly typed and error handling is robust (errors are logged in all plugin hooks).
-- Adapter functions are fully typed and include JSDoc for maintainability.
-- Negative and snapshot tests are planned for all output-generating modules.
-- This section is updated as part of every major refactor or code review.
 
 ## Conclusion
 
